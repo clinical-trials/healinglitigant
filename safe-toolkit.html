@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SAFE Readiness Toolkit Mockup</title>
+    <meta
+      name="description"
+      content="A survivor-centered visualization of an AED-adjacent SAFE readiness station for public buildings."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Work+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17231e;
+        --muted: #5b6860;
+        --paper: #fbfaf5;
+        --mist: #eaf2ec;
+        --pine: #1f4f3d;
+        --pine-dark: #133326;
+        --gold: #d99b44;
+        --rose: #c5655b;
+        --sky: #d9eaf2;
+        --line: rgba(23, 35, 30, 0.14);
+        --shadow: 0 2rem 5rem rgba(25, 47, 37, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 15% 12%, rgba(217, 155, 68, 0.16), transparent 26rem),
+          linear-gradient(180deg, #eef6f2 0%, var(--paper) 34%, #f4f7ef 100%);
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(100% - 2rem, 1180px);
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.38);
+        background: rgba(251, 250, 245, 0.78);
+        backdrop-filter: blur(20px);
+      }
+
+      .topbar-inner {
+        display: flex;
+        min-height: 4rem;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 2.35rem;
+        height: 2.35rem;
+        place-items: center;
+        border-radius: 0.5rem;
+        color: white;
+        background: linear-gradient(135deg, var(--pine), #78a27e);
+        box-shadow: 0 0.75rem 1.8rem rgba(31, 79, 61, 0.18);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        border: 1px solid rgba(31, 79, 61, 0.16);
+        border-radius: 999px;
+        padding: 0.75rem 1rem;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 0.65rem 1.5rem rgba(23, 35, 30, 0.08);
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        color: white;
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--pine), #4f886d);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 76vh;
+        display: grid;
+        align-items: end;
+        overflow: hidden;
+        color: white;
+        isolation: isolate;
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background:
+          linear-gradient(180deg, rgba(7, 19, 17, 0.24), rgba(7, 19, 17, 0.68)),
+          url("./assets/mountain-path-resilience.png") center / cover no-repeat;
+        transform: scale(1.02);
+      }
+
+      .hero::after {
+        position: absolute;
+        inset: auto 0 0;
+        z-index: -1;
+        height: 32%;
+        content: "";
+        background: linear-gradient(0deg, var(--paper), transparent);
+      }
+
+      .hero-card {
+        width: min(58rem, 100%);
+        padding: 7rem 0 6rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 1rem;
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Fraunces", Georgia, serif;
+        line-height: 1.02;
+      }
+
+      h1 {
+        max-width: 12ch;
+        font-size: 3.25rem;
+      }
+
+      .hero-card p {
+        max-width: 44rem;
+        margin: 1.2rem 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.18rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.8rem;
+      }
+
+      .hero-actions .button {
+        color: var(--ink);
+      }
+
+      .hero-actions .primary {
+        color: white;
+      }
+
+      section {
+        padding: 5rem 0;
+      }
+
+      .section-head {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .section-head h2 {
+        max-width: 13ch;
+        font-size: 2.5rem;
+      }
+
+      .section-head p {
+        max-width: 48rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .station-wrap {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .station-panel {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 0.5rem;
+        padding: clamp(1rem, 3vw, 2rem);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(234, 242, 236, 0.82)),
+          radial-gradient(circle at 80% 10%, rgba(217, 155, 68, 0.18), transparent 22rem);
+        box-shadow: var(--shadow);
+      }
+
+      .station {
+        display: grid;
+        gap: 1rem;
+        border: 1px solid rgba(19, 51, 38, 0.18);
+        border-radius: 0.5rem;
+        padding: clamp(0.9rem, 3vw, 1.4rem);
+        background: linear-gradient(180deg, #fdfbf4, #e8efe8);
+      }
+
+      .station-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-radius: 0.5rem;
+        padding: 0.9rem 1rem;
+        color: white;
+        background: linear-gradient(135deg, var(--pine-dark), var(--pine));
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-weight: 800;
+      }
+
+      .station-title span {
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .station-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .kit-card {
+        min-height: 10rem;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .kit-card h3 {
+        margin-bottom: 0.45rem;
+        font-size: 1.3rem;
+      }
+
+      .kit-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .kit-card.feature {
+        min-height: 18rem;
+        display: grid;
+        align-content: space-between;
+        color: white;
+        background:
+          linear-gradient(160deg, rgba(19, 51, 38, 0.88), rgba(31, 79, 61, 0.7)),
+          url("./assets/mountain-path-resilience.png") center / cover no-repeat;
+      }
+
+      .kit-card.feature p {
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .signal-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .signal {
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        border-radius: 999px;
+        padding: 0.45rem 0.7rem;
+        background: rgba(255, 255, 255, 0.16);
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .paper-bag {
+        position: relative;
+        width: min(100%, 14rem);
+        min-height: 12rem;
+        margin: 1rem auto 0;
+        border: 1px solid rgba(87, 60, 35, 0.18);
+        border-radius: 0.4rem;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 35%, rgba(113, 78, 42, 0.09) 36%, transparent 58%),
+          linear-gradient(180deg, #d7ad71, #bc884c);
+        box-shadow: inset 0 0.75rem 0 rgba(255, 255, 255, 0.16), 0 1rem 2rem rgba(82, 57, 37, 0.16);
+      }
+
+      .paper-bag::before {
+        position: absolute;
+        top: -0.8rem;
+        left: 0.8rem;
+        right: 0.8rem;
+        height: 1.15rem;
+        content: "";
+        border-radius: 0.35rem;
+        background: #e3bd83;
+        transform: rotate(-1deg);
+      }
+
+      .paper-label {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        border-radius: 0.5rem;
+        padding: 0.85rem;
+        background: rgba(255, 248, 227, 0.84);
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .qr-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.9rem;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .qr {
+        display: grid;
+        width: 5rem;
+        height: 5rem;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        gap: 0.18rem;
+        border: 0.45rem solid white;
+        border-radius: 0.5rem;
+        background: white;
+        box-shadow: 0 0.8rem 1.6rem rgba(23, 35, 30, 0.12);
+      }
+
+      .qr i {
+        display: block;
+        border-radius: 0.12rem;
+        background: #17231e;
+      }
+
+      .qr i:nth-child(2n + 1),
+      .qr i:nth-child(4),
+      .qr i:nth-child(12),
+      .qr i:nth-child(18) {
+        background: transparent;
+      }
+
+      .link-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-top: 1.4rem;
+      }
+
+      .resource-link {
+        display: flex;
+        min-height: 4rem;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        padding: 0.85rem 1rem;
+        background: rgba(255, 255, 255, 0.72);
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .check-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .check-card {
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .check-card h3 {
+        margin-bottom: 0.6rem;
+        font-size: 1.45rem;
+      }
+
+      .check-card ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        color: var(--muted);
+      }
+
+      .boundary {
+        border-radius: 0.5rem;
+        padding: clamp(1.2rem, 4vw, 2rem);
+        color: white;
+        background:
+          linear-gradient(135deg, rgba(19, 51, 38, 0.94), rgba(49, 82, 66, 0.9)),
+          radial-gradient(circle at top right, rgba(217, 155, 68, 0.32), transparent 18rem);
+        box-shadow: var(--shadow);
+      }
+
+      .boundary h2 {
+        max-width: 12ch;
+        font-size: 2.4rem;
+      }
+
+      .boundary p {
+        max-width: 58rem;
+        margin: 1rem 0 0;
+        color: rgba(255, 255, 255, 0.84);
+      }
+
+      .local-fields {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-top: 1.2rem;
+      }
+
+      .field {
+        border: 1px dashed rgba(255, 255, 255, 0.32);
+        border-radius: 0.5rem;
+        padding: 0.9rem 1rem;
+        background: rgba(255, 255, 255, 0.08);
+        font-family: "Work Sans", system-ui, sans-serif;
+      }
+
+      .field span {
+        display: block;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      footer {
+        padding: 3rem 0 4rem;
+        color: var(--muted);
+      }
+
+      @media (min-width: 700px) {
+        h1 {
+          font-size: 5.4rem;
+        }
+
+        .section-head h2 {
+          font-size: 3.8rem;
+        }
+
+        .boundary h2 {
+          font-size: 3.2rem;
+        }
+
+        .station-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .kit-card.feature {
+          grid-row: span 2;
+        }
+
+        .link-list,
+        .check-grid,
+        .local-fields {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1024px) {
+        h1 {
+          font-size: 7.2rem;
+        }
+
+        .section-head h2 {
+          font-size: 4.8rem;
+        }
+
+        .boundary h2 {
+          font-size: 3.8rem;
+        }
+
+        .station-wrap {
+          grid-template-columns: 1.2fr 0.8fr;
+          align-items: start;
+        }
+
+        .station-grid {
+          grid-template-columns: 1.15fr 0.9fr 0.9fr;
+        }
+
+        .kit-card.feature {
+          grid-column: span 1;
+          grid-row: span 2;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .topbar {
+          position: static;
+        }
+
+        .topbar-inner,
+        .nav-actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .nav-actions .button {
+          width: 100%;
+        }
+
+        .hero {
+          min-height: 72vh;
+        }
+
+        .qr-card {
+          grid-template-columns: 1fr;
+        }
+
+        .qr {
+          width: 4.5rem;
+          height: 4.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="./index.html#readiness" aria-label="Return to public building SAFE readiness section">
+          <span class="brand-mark"><i data-lucide="mountain" aria-hidden="true"></i></span>
+          SAFE readiness toolkit
+        </a>
+        <nav class="nav-actions" aria-label="Toolkit navigation">
+          <a class="button" href="./index.html#readiness">Back to readiness</a>
+          <a class="button primary" href="#station">View station mockup</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="toolkit-title">
+        <div class="shell hero-card">
+          <p class="eyebrow">Public building SAFE readiness</p>
+          <h1 id="toolkit-title">A calm emergency station for the day after.</h1>
+          <p>
+            A visual prototype for placing survivor-controlled sexual-assault response instructions
+            beside AEDs, first-aid cabinets, campus safety desks, libraries, airports, shelters,
+            and other public buildings.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#station">Open the toolkit visual</a>
+            <a class="button" href="#resources">Use resource links</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="station" class="shell" aria-labelledby="station-title">
+        <div class="section-head">
+          <p class="eyebrow">Toolkit mockup</p>
+          <h2 id="station-title">One cabinet, six survivor-centered jobs.</h2>
+          <p>
+            The station is not a public rape kit. It is a clear, beautiful, evidence-aware routing tool:
+            get safe, reach an advocate, find medical and forensic care, preserve choices, and avoid
+            preventable harm while trained responders take over.
+          </p>
+        </div>
+
+        <div class="station-wrap">
+          <div class="station-panel">
+            <div class="station" aria-label="AED-adjacent SAFE readiness station mockup">
+              <div class="station-title">
+                <span>AED-adjacent SAFE station</span>
+                <i data-lucide="shield-check" aria-hidden="true"></i>
+              </div>
+              <div class="station-grid">
+                <article class="kit-card feature">
+                  <div>
+                    <p class="eyebrow">Sealed response card</p>
+                    <h3>First 10 minutes: safety, choice, care.</h3>
+                    <p>
+                      Plain language steps for a survivor or trusted person: move to safety, call or text
+                      an advocate, do not force decisions, and preserve options for medical care and reporting.
+                    </p>
+                  </div>
+                  <div class="signal-row" aria-label="Response card topics">
+                    <span class="signal">Get safe</span>
+                    <span class="signal">Call advocate</span>
+                    <span class="signal">Preserve options</span>
+                  </div>
+                </article>
+
+                <article class="kit-card">
+                  <h3>Private QR access</h3>
+                  <p>Links to RAINN, local advocacy, SAFE/SANE care, and a trauma-informed slow-start page.</p>
+                  <div class="qr-card">
+                    <div class="qr" aria-hidden="true">
+                      <i></i><i></i><i></i><i></i><i></i>
+                      <i></i><i></i><i></i><i></i><i></i>
+                      <i></i><i></i><i></i><i></i><i></i>
+                      <i></i><i></i><i></i><i></i><i></i>
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <p>Large-print, low-panic instructions with short links below the QR code.</p>
+                  </div>
+                </article>
+
+                <article class="kit-card">
+                  <h3>Clean paper bag</h3>
+                  <p>For clothing or items only where local SANE/SART/legal reviewers approve the protocol.</p>
+                  <div class="paper-bag" aria-label="Clean paper bag mockup">
+                    <span class="paper-label">unused paper bag</span>
+                  </div>
+                </article>
+
+                <article class="kit-card">
+                  <h3>Nearest SAFE/SANE site</h3>
+                  <p>A replaceable local card names the closest exam site, hours, phone number, and transport option.</p>
+                </article>
+
+                <article class="kit-card">
+                  <h3>Advocate handoff</h3>
+                  <p>Staff script: believe, ask what would help right now, offer privacy, and connect to trained support.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <aside class="boundary" aria-labelledby="boundary-title">
+            <p class="eyebrow">Safety boundary</p>
+            <h2 id="boundary-title">Instructions, not investigation.</h2>
+            <p>
+              The toolkit should never ask bystanders to collect evidence, examine injuries, interrogate a
+              survivor, or decide whether an assault occurred. It should route people toward trained care
+              while preserving privacy and choice.
+            </p>
+            <div class="local-fields" aria-label="Local fill-in cards">
+              <div class="field"><span>Local advocate</span> Name, phone, text line</div>
+              <div class="field"><span>SAFE/SANE care</span> Site, hours, transport</div>
+              <div class="field"><span>Emergency</span> Call 911 if immediate danger</div>
+              <div class="field"><span>Restock owner</span> Building contact, review date</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="shell" aria-labelledby="protocol-title">
+        <div class="section-head">
+          <p class="eyebrow">Readiness protocol</p>
+          <h2 id="protocol-title">Make the right action the easiest action.</h2>
+          <p>
+            A public-building station should be simple enough for a panicked survivor, a friend, a librarian,
+            a campus RA, a security guard, or an airport worker to use without improvising.
+          </p>
+        </div>
+        <div class="check-grid">
+          <article class="check-card">
+            <h3>Cabinet contents</h3>
+            <ul>
+              <li>Sealed response card with plain-language steps.</li>
+              <li>RAINN and local hotline QR cards with short typed URLs.</li>
+              <li>Nearest SAFE/SANE care card with update date.</li>
+              <li>Clean paper bag and local paper-bag guidance if approved.</li>
+              <li>Staff mini-card for supportive first response.</li>
+            </ul>
+          </article>
+          <article class="check-card">
+            <h3>Staff script</h3>
+            <ul>
+              <li>"I am sorry this happened. You are not in trouble."</li>
+              <li>"Would you like privacy, a phone, an advocate, or medical care?"</li>
+              <li>"You can choose what happens next."</li>
+              <li>"I will not ask details you do not want to share."</li>
+            </ul>
+          </article>
+          <article class="check-card">
+            <h3>Paper bag guidance</h3>
+            <ul>
+              <li>Use only for dry clothing or items when local protocol permits.</li>
+              <li>Do not seal wet items in plastic.</li>
+              <li>Do not label with details in public view.</li>
+              <li>Bring items to trained medical or forensic care as soon as possible.</li>
+            </ul>
+          </article>
+          <article class="check-card">
+            <h3>Maintenance</h3>
+            <ul>
+              <li>Assign an owner for monthly checks.</li>
+              <li>Review local contacts every 90 days.</li>
+              <li>Replace opened cards and paper bags immediately.</li>
+              <li>Audit privacy, accessibility, and language access.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="resources" class="shell" aria-labelledby="resources-title">
+        <div class="section-head">
+          <p class="eyebrow">Live resource links</p>
+          <h2 id="resources-title">For the QR panel.</h2>
+          <p>
+            These links can become the public QR destinations while local teams add jurisdiction-specific
+            medical, advocacy, legal, and campus/community resources.
+          </p>
+        </div>
+        <div class="link-list">
+          <a class="resource-link" href="https://hotline.rainn.org/online" target="_blank" rel="noreferrer">
+            RAINN online hotline <i data-lucide="external-link" aria-hidden="true"></i>
+          </a>
+          <a class="resource-link" href="https://centers.rainn.org/" target="_blank" rel="noreferrer">
+            Find local sexual assault support <i data-lucide="external-link" aria-hidden="true"></i>
+          </a>
+          <a class="resource-link" href="https://rainn.org/2240/getting-a-sexual-assault-forensic-exam-safe/" target="_blank" rel="noreferrer">
+            RAINN SAFE exam overview <i data-lucide="external-link" aria-hidden="true"></i>
+          </a>
+          <a class="resource-link" href="https://www.thehotline.org/" target="_blank" rel="noreferrer">
+            National Domestic Violence Hotline <i data-lucide="external-link" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">
+      <p>
+        Draft concept for design review only. Public deployment should be reviewed by survivors,
+        advocates, SANE/SART clinicians, local legal counsel, disability/accessibility reviewers,
+        and community safety partners.
+      </p>
+    </footer>
+
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>
