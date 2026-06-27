@@ -635,6 +635,29 @@ footer > * {
   line-height: 1.62;
 }
 
+.cabinet-kit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cabinet-kit strong {
+  width: 100%;
+  color: var(--white);
+  font-size: 0.92rem;
+}
+
+.cabinet-kit span {
+  margin: 0;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f6dfaa;
+}
+
 .readiness-card ul {
   display: grid;
   gap: 0.5rem;
