@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SA/DV Data Atlas Prototype</title>
+  <style>
+    :root {
+      --ink:#111719; --muted:#60706d; --paper:#f7f4ed; --white:#fff;
+      --moss:#2f4d44; --sage:#63786e; --clay:#a35d45; --gold:#c99535; --blue:#365f7f;
+      --line:rgba(17,23,25,.12); --shadow:0 24px 70px rgba(47,77,68,.15);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:linear-gradient(180deg,#fbfaf7,#e8f0ec); color:var(--ink); font-family:Avenir Next,Segoe UI,system-ui,sans-serif; }
+    header { min-height:72vh; padding:6vw; color:#fff; display:grid; align-content:end; background:linear-gradient(90deg,rgba(12,18,19,.82),rgba(12,18,19,.32)), url('./assets/mountain-path-resilience.png') center/cover; }
+    h1,h2,h3 { font-family:Iowan Old Style, Palatino, Georgia, serif; letter-spacing:0; }
+    h1 { max-width:880px; margin:0 0 18px; font-size:clamp(3rem,9vw,7rem); line-height:.94; }
+    header p { max-width:760px; margin:0; color:rgba(255,255,255,.86); font-size:1.25rem; line-height:1.65; }
+    main { padding:0; }
+    section { padding:clamp(48px,7vw,92px) clamp(18px,5vw,72px); }
+    .intro { background:#111719; color:#fff; display:grid; gap:28px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+    .intro p { color:rgba(255,255,255,.75); line-height:1.7; }
+    .kicker { color:var(--gold); font-weight:900; letter-spacing:.08em; text-transform:uppercase; font-size:.78rem; }
+    h2 { max-width:880px; margin:0 0 24px; font-size:clamp(2rem,5vw,4.8rem); line-height:1; }
+    .note { max-width:840px; color:var(--muted); line-height:1.75; font-size:1.05rem; }
+    .bars { display:grid; gap:14px; max-width:1050px; }
+    .bar-row { display:grid; grid-template-columns:minmax(260px,420px) 1fr; gap:20px; align-items:center; padding:18px; background:rgba(255,255,255,.72); border:1px solid var(--line); border-radius:18px; box-shadow:0 10px 30px rgba(47,77,68,.07); }
+    .bar-row strong,.bar-row span { display:block; }
+    .bar-row span { color:var(--muted); margin-top:4px; }
+    .bar { display:block; height:28px; border-radius:999px; background:#e3ded3; overflow:hidden; }
+    .bar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--gold),var(--sage)); }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+    .cards article { min-height:210px; padding:22px; border-radius:18px; background:rgba(255,255,255,.78); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .cards span { display:inline-block; color:var(--clay); font-weight:900; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:26px; }
+    .cards h3 { margin:0 0 10px; font-size:1.55rem; line-height:1.05; }
+    .cards p { color:var(--muted); line-height:1.62; }
+    .network-wrap { overflow:auto; border-radius:24px; background:#111719; padding:20px; box-shadow:var(--shadow); }
+    .network { min-width:980px; width:100%; }
+    .network path { fill:none; stroke:url(#line); stroke-width:2; opacity:.42; }
+    .node rect { fill:rgba(255,255,255,.1); stroke:rgba(255,255,255,.2); }
+    .node.source rect { fill:rgba(201,149,53,.18); }
+    .node.bridge rect { fill:rgba(99,120,110,.24); }
+    .node.target rect { fill:rgba(54,95,127,.24); }
+    .node text { fill:#fff; font-size:12px; font-weight:800; text-anchor:middle; dominant-baseline:middle; }
+    table { width:100%; border-collapse:collapse; background:#fff; border-radius:18px; overflow:hidden; box-shadow:var(--shadow); }
+    th,td { padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; text-align:left; line-height:1.45; }
+    th { background:#111719; color:#fff; }
+    td:first-child { font-weight:900; color:var(--moss); }
+    .privacy { background:linear-gradient(135deg,#2f4d44,#111719); color:#fff; }
+    .privacy .cards article { background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.16); box-shadow:none; }
+    .privacy .cards p { color:rgba(255,255,255,.72); }
+    .privacy .cards h3 { color:#fff; }
+    footer { padding:32px clamp(18px,5vw,72px); background:#0e1011; color:rgba(255,255,255,.72); line-height:1.6; }
+    a { color:inherit; }
+    
+    @media (max-width:720px) {
+      header { min-height:72vh; padding:24px; background-position:38% center; }
+      h1 { font-size:clamp(2.6rem,14vw,4.8rem); }
+      header p { font-size:1.05rem; }
+      section { padding:44px 18px; }
+      .bar-row { grid-template-columns:1fr; }
+      .cards article { min-height:auto; }
+      table { display:block; overflow-x:auto; white-space:normal; }
+      th,td { min-width:12rem; }
+      .network-wrap { margin-inline:-18px; border-radius:0; }
+    }
+
+  </style>
+</head>
+<body>
+<header>
+  <span class="kicker">SA/DV Data Atlas Prototype</span>
+  <h1>Make the invisible system visible.</h1>
+  <p>A Python-generated prototype for representing sexual violence data without reducing survivors to data points: burden, access gaps, prevention practice, evidence, services, and privacy rules in one atlas.</p>
+</header>
+<main>
+  <section class="intro">
+    <div>
+      <span class="kicker">Design principle</span>
+      <h2>Use many visual forms, not one giant chart.</h2>
+    </div>
+    <p>Sexual violence data spans surveys, official reports, hospital/SANE access, prevention implementation, evidence citations, resource availability, geography, policy, and survivor-controlled records. The right system is an atlas: charts for burden, maps for access, networks for pathways, timelines for change, and strict privacy boundaries for survivor data.</p>
+  </section>
+
+  <section>
+    <span class="kicker">Official burden signals</span>
+    <h2>Start with population-level data, not survivor vault data.</h2>
+    <p class="note">These bars use CDC public quick facts as an example of how population-level surveillance can be displayed without exposing individual survivor records. Values are rounded approximations of ratio language for visualization only.</p>
+    <div class="bars">
+
+            <article class="bar-row">
+              <div>
+                <strong>Women: contact sexual violence, lifetime</strong>
+                <span>Nearly half - 48% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Women: contact sexual violence, lifetime">
+                <span class="bar"><i style="width:48%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Men: contact sexual violence, lifetime</strong>
+                <span>More than 1 in 6 - 17% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Men: contact sexual violence, lifetime">
+                <span class="bar"><i style="width:17%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Women: completed or attempted rape, lifetime</strong>
+                <span>More than 1 in 5 - 21% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Women: completed or attempted rape, lifetime">
+                <span class="bar"><i style="width:21%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Men: completed or attempted rape, lifetime</strong>
+                <span>1 in 31 - 3.2% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Men: completed or attempted rape, lifetime">
+                <span class="bar"><i style="width:3.2%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Men: made to penetrate, lifetime</strong>
+                <span>1 in 26 - 3.8% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Men: made to penetrate, lifetime">
+                <span class="bar"><i style="width:3.8%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Women: technology-facilitated sexual violence, lifetime</strong>
+                <span>More than 1 in 4 - 26% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Women: technology-facilitated sexual violence, lifetime">
+                <span class="bar"><i style="width:26%"></i></span>
+              </a>
+            </article>
+            
+
+            <article class="bar-row">
+              <div>
+                <strong>Men: technology-facilitated sexual violence, lifetime</strong>
+                <span>More than 1 in 6 - 17% approx.</span>
+              </div>
+              <a href="https://www.cdc.gov/sexual-violence/about/index.html" target="_blank" rel="noreferrer" aria-label="Open source for Men: technology-facilitated sexual violence, lifetime">
+                <span class="bar"><i style="width:17%"></i></span>
+              </a>
+            </article>
+            
+</div>
+  </section>
+
+  <section>
+    <span class="kicker">Data domains</span>
+    <h2>The atlas needs separate lanes.</h2>
+    <div class="cards">
+<article><span>Population burden</span><h3>NISVS, NCVS, CDC, state surveys</h3><p>Prevalence, demographics, underreporting, early onset</p></article>
+<article><span>Reported incidents</span><h3>FBI CDE, local police, campus Clery, Title IX</h3><p>Reported volume, clearance, jurisdiction variation</p></article>
+<article><span>Health response</span><h3>SANE/SART, ED, claims, clinics</h3><p>Time to exam, STI care, pregnancy-related options, follow-up</p></article>
+<article><span>Survivor resources</span><h3>Hotlines, advocates, shelters, legal aid</h3><p>Access gaps, warm handoffs, service deserts</p></article>
+<article><span>Prevention implementation</span><h3>Schools, sports, workplaces, coalitions</h3><p>Training fidelity, reach, dosage, protective norms</p></article>
+<article><span>Evidence library</span><h3>PMIDs, CDC/OVW/DOJ guidance, program docs</h3><p>Allowed claims, evidence strength, limitations</p></article>
+<article><span>Community context</span><h3>Census, rurality, transit, housing, broadband</h3><p>Structural risks, protective infrastructure, access barriers</p></article>
+<article><span>Privacy and governance</span><h3>Consent, de-identification, audit logs</h3><p>What can be shown, who can see it, and when</p></article>
+</div>
+  </section>
+
+  <section>
+    <span class="kicker">Evidence to action</span>
+    <h2>Connect PMIDs and guidance to practices people can deploy.</h2>
+    <p class="note">A network view is useful because the same source can support multiple practices, and the same practice can require several kinds of evidence. This is the structure behind a living evidence library.</p>
+    <div class="network-wrap"><svg class="network" viewBox="0 0 1100 560" role="img" aria-label="Evidence to practice network">
+<defs><linearGradient id="line" x1="0" x2="1"><stop stop-color="#c99535"/><stop offset="1" stop-color="#63786e"/></linearGradient></defs>
+<path d="M 230 102.0 C 390 102.0, 360 130.0, 520 130.0" />
+<path d="M 580 130.0 C 740 130.0, 710 102.0, 880 102.0" />
+<path d="M 230 60.0 C 390 60.0, 360 270.0, 520 270.0" />
+<path d="M 580 270.0 C 740 270.0, 710 354.0, 880 354.0" />
+<path d="M 230 60.0 C 390 60.0, 360 375.0, 520 375.0" />
+<path d="M 580 375.0 C 740 375.0, 710 354.0, 880 354.0" />
+<path d="M 230 60.0 C 390 60.0, 360 235.0, 520 235.0" />
+<path d="M 580 235.0 C 740 235.0, 710 438.0, 880 438.0" />
+<path d="M 230 354.0 C 390 354.0, 360 95.0, 520 95.0" />
+<path d="M 580 95.0 C 740 95.0, 710 480.0, 880 480.0" />
+<path d="M 230 396.0 C 390 396.0, 360 60.0, 520 60.0" />
+<path d="M 580 60.0 C 740 60.0, 710 144.0, 880 144.0" />
+<path d="M 230 228.0 C 390 228.0, 360 165.0, 520 165.0" />
+<path d="M 580 165.0 C 740 165.0, 710 480.0, 880 480.0" />
+<path d="M 230 186.0 C 390 186.0, 360 340.0, 520 340.0" />
+<path d="M 580 340.0 C 740 340.0, 710 228.0, 880 228.0" />
+<path d="M 230 144.0 C 390 144.0, 360 200.0, 520 200.0" />
+<path d="M 580 200.0 C 740 200.0, 710 186.0, 880 186.0" />
+<path d="M 230 270.0 C 390 270.0, 360 480.0, 520 480.0" />
+<path d="M 580 480.0 C 740 480.0, 710 396.0, 880 396.0" />
+<path d="M 230 312.0 C 390 312.0, 360 305.0, 520 305.0" />
+<path d="M 580 305.0 C 740 305.0, 710 270.0, 880 270.0" />
+<path d="M 230 438.0 C 390 438.0, 360 410.0, 520 410.0" />
+<path d="M 580 410.0 C 740 410.0, 710 312.0, 880 312.0" />
+<path d="M 230 480.0 C 390 480.0, 360 445.0, 520 445.0" />
+<path d="M 580 445.0 C 740 445.0, 710 60.0, 880 60.0" />
+<g class="node source"><rect x="20" y="42.0" width="210" height="36" rx="18"/><text x="125" y="65.0">CDC prevention strategies</text></g>
+<g class="node source"><rect x="20" y="84.0" width="210" height="36" rx="18"/><text x="125" y="107.0">CDC public health approach</text></g>
+<g class="node source"><rect x="20" y="126.0" width="210" height="36" rx="18"/><text x="125" y="149.0">PMID 11965295</text></g>
+<g class="node source"><rect x="20" y="168.0" width="210" height="36" rx="18"/><text x="125" y="191.0">PMID 15625149</text></g>
+<g class="node source"><rect x="20" y="210.0" width="210" height="36" rx="18"/><text x="125" y="233.0">PMID 23947324</text></g>
+<g class="node source"><rect x="20" y="252.0" width="210" height="36" rx="18"/><text x="125" y="275.0">PMID 25784571</text></g>
+<g class="node source"><rect x="20" y="294.0" width="210" height="36" rx="18"/><text x="125" y="317.0">PMID 29333937</text></g>
+<g class="node source"><rect x="20" y="336.0" width="210" height="36" rx="18"/><text x="125" y="359.0">PMID 31930358</text></g>
+<g class="node source"><rect x="20" y="378.0" width="210" height="36" rx="18"/><text x="125" y="401.0">PMID 33481150</text></g>
+<g class="node source"><rect x="20" y="420.0" width="210" height="36" rx="18"/><text x="125" y="443.0">Project Callisto</text></g>
+<g class="node source"><rect x="20" y="462.0" width="210" height="36" rx="18"/><text x="125" y="485.0">RAINN SAFE guidance</text></g>
+<g class="node bridge"><rect x="520" y="42.0" width="60" height="36" rx="18"/><text x="550" y="65.0">Cases prevented framing</text></g>
+<g class="node bridge"><rect x="520" y="77.0" width="60" height="36" rx="18"/><text x="550" y="100.0">Coach-delivered prevention</text></g>
+<g class="node bridge"><rect x="520" y="112.0" width="60" height="36" rx="18"/><text x="550" y="135.0">Define + monitor</text></g>
+<g class="node bridge"><rect x="520" y="147.0" width="60" height="36" rx="18"/><text x="550" y="170.0">Gender-equitable norms</text></g>
+<g class="node bridge"><rect x="520" y="182.0" width="60" height="36" rx="18"/><text x="550" y="205.0">IPV health burden</text></g>
+<g class="node bridge"><rect x="520" y="217.0" width="60" height="36" rx="18"/><text x="550" y="240.0">Protective environments</text></g>
+<g class="node bridge"><rect x="520" y="252.0" width="60" height="36" rx="18"/><text x="550" y="275.0">Protective norms</text></g>
+<g class="node bridge"><rect x="520" y="287.0" width="60" height="36" rx="18"/><text x="550" y="310.0">Revictimization</text></g>
+<g class="node bridge"><rect x="520" y="322.0" width="60" height="36" rx="18"/><text x="550" y="345.0">SA/IPV overlap</text></g>
+<g class="node bridge"><rect x="520" y="357.0" width="60" height="36" rx="18"/><text x="550" y="380.0">Skills and dating education</text></g>
+<g class="node bridge"><rect x="520" y="392.0" width="60" height="36" rx="18"/><text x="550" y="415.0">Survivor-controlled vault</text></g>
+<g class="node bridge"><rect x="520" y="427.0" width="60" height="36" rx="18"/><text x="550" y="450.0">Trained forensic exam routing</text></g>
+<g class="node bridge"><rect x="520" y="462.0" width="60" height="36" rx="18"/><text x="550" y="485.0">Unacknowledged rape</text></g>
+<g class="node target"><rect x="880" y="42.0" width="200" height="36" rx="18"/><text x="980" y="65.0">AED-adjacent packet</text></g>
+<g class="node target"><rect x="880" y="84.0" width="200" height="36" rx="18"/><text x="980" y="107.0">Data architecture</text></g>
+<g class="node target"><rect x="880" y="126.0" width="200" height="36" rx="18"/><text x="980" y="149.0">Funder dashboard</text></g>
+<g class="node target"><rect x="880" y="168.0" width="200" height="36" rx="18"/><text x="980" y="191.0">Health system partnerships</text></g>
+<g class="node target"><rect x="880" y="210.0" width="200" height="36" rx="18"/><text x="980" y="233.0">Integrated response</text></g>
+<g class="node target"><rect x="880" y="252.0" width="200" height="36" rx="18"/><text x="980" y="275.0">Longitudinal safety</text></g>
+<g class="node target"><rect x="880" y="294.0" width="200" height="36" rx="18"/><text x="980" y="317.0">Private documentation</text></g>
+<g class="node target"><rect x="880" y="336.0" width="200" height="36" rx="18"/><text x="980" y="359.0">Schools/campuses</text></g>
+<g class="node target"><rect x="880" y="378.0" width="200" height="36" rx="18"/><text x="980" y="401.0">Slow documentation</text></g>
+<g class="node target"><rect x="880" y="420.0" width="200" height="36" rx="18"/><text x="980" y="443.0">Workplaces/public buildings</text></g>
+<g class="node target"><rect x="880" y="462.0" width="200" height="36" rx="18"/><text x="980" y="485.0">Youth sports</text></g>
+</svg></div>
+  </section>
+
+  <section>
+    <span class="kicker">Python libraries</span>
+    <h2>Recommended stack for enormous data.</h2>
+    <p class="note">Only pandas and numpy are installed in the current bundled environment, so this prototype is pure Python/HTML/SVG. For production-scale work, install the stack below by layer rather than trying to make one visualization library do everything.</p>
+    <table><thead><tr><th>Layer</th><th>Python / data libraries</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td>Ingest</td><td>frictionless, intake, requests, sodapy, fsspec</td><td>Pull CDC, BJS, FBI, state, hospital, survey, grant, and local partner files.</td></tr>
+<tr><td>Storage</td><td>Parquet + Apache Arrow + DuckDB</td><td>Columnar storage and SQL over millions of rows without needing a large database server.</td></tr>
+<tr><td>Large dataframe</td><td>Polars or pandas</td><td>Polars for speed and scale; pandas for familiar analysis and smaller review tables.</td></tr>
+<tr><td>Dashboards</td><td>Plotly Dash, Streamlit, Panel</td><td>Rapid analyst dashboards with filters for geography, time, setting, intervention, and evidence source.</td></tr>
+<tr><td>Exploration graphics</td><td>Altair/Vega-Lite, Plotly, Observable</td><td>Declarative charts for evidence review, survivor-resource maps, and public dashboards.</td></tr>
+<tr><td>Huge point clouds</td><td>Datashader + HoloViews</td><td>Render millions of incidents, locations, or timeline points without overplotting.</td></tr>
+<tr><td>Maps</td><td>geopandas, pydeck/deck.gl, kepler.gl, folium</td><td>County/state maps, service deserts, travel-time zones, and SAFE/SANE access gaps.</td></tr>
+<tr><td>Networks</td><td>NetworkX, igraph, graph-tool, Neo4j</td><td>Represent perpetration patterns, referral networks, evidence-to-intervention links, and care pathways.</td></tr>
+<tr><td>Text and narratives</td><td>spaCy, BERTopic, sentence-transformers</td><td>Analyze de-identified narrative themes, service notes, policies, court text, and evidence memos.</td></tr>
+<tr><td>ML and evaluation</td><td>scikit-learn, statsmodels, causalml/econml</td><td>Risk/protective-factor models, evaluation, causal inference, and pilot impact estimates.</td></tr>
+<tr><td>Privacy</td><td>OpenDP, diffprivlib, cleanrooms, synthetic data</td><td>Reduce re-identification risk before public reporting or cross-institution analytics.</td></tr>
+</tbody></table>
+  </section>
+
+  <section class="privacy">
+    <span class="kicker">Survivor-safe analytics</span>
+    <h2>Do not visualize what should remain private.</h2>
+    <div class="cards">
+<article><span>Rule 1</span><h3>Separate surveillance from vault data</h3><p>Use CDC, BJS, FBI, state, campus, hospital, and community datasets for public burden and access visuals. Survivor-controlled documentation should not feed dashboards by default.</p></article>
+<article><span>Rule 2</span><h3>Aggregate before sharing</h3><p>Suppress small cells, remove identifiers, use geography carefully, and never publish combinations that make a survivor recognizable.</p></article>
+<article><span>Rule 3</span><h3>Show uncertainty and definitions</h3><p>Rape, sexual assault, contact sexual violence, made-to-penetrate, harassment, technology-facilitated harm, reports, and prevalence surveys are not interchangeable.</p></article>
+<article><span>Rule 4</span><h3>Make evidence clickable</h3><p>Every research claim should link to PMID when available; official guidance should be labeled as official guidance, not PubMed evidence.</p></article>
+</div>
+  </section>
+</main>
+<footer>
+  Sources: <a href="https://www.cdc.gov/sexual-violence/about/index.html">CDC About Sexual Violence</a>; <a href="https://www.cdc.gov/sexual-violence/prevention/index.html">CDC Sexual Violence Prevention</a>; <a href="https://www.cdc.gov/violence-prevention/about/about-the-public-health-approach-to-violence-prevention.html">CDC Public Health Approach to Violence Prevention</a>. Planning prototype only; not clinical, legal, forensic, or crisis guidance.
+</footer>
+</body>
+</html>
