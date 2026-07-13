@@ -334,7 +334,7 @@
       .paper-bag {
         position: relative;
         width: min(100%, 14rem);
-        min-height: 12rem;
+        min-height: 16rem;
         margin: 1rem auto 0;
         border: 1px solid rgba(87, 60, 35, 0.18);
         border-radius: 0.4rem;
@@ -360,9 +360,9 @@
         position: absolute;
         left: 1rem;
         right: 1rem;
-        bottom: 1rem;
+        top: 1rem;
         border-radius: 0.5rem;
-        padding: 0.85rem;
+        padding: 0.8rem;
         background: rgba(255, 248, 227, 0.84);
         font-family: "Work Sans", system-ui, sans-serif;
         font-size: 0.76rem;
@@ -370,6 +370,22 @@
         letter-spacing: 0.08em;
         text-align: center;
         text-transform: uppercase;
+      }
+
+      .paper-steps {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        margin: 0;
+        padding: 0.8rem 0.9rem 0.8rem 1.65rem;
+        border-radius: 0.5rem;
+        background: rgba(255, 248, 227, 0.7);
+        color: #402c1a;
+        font-family: "Work Sans", system-ui, sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        line-height: 1.35;
       }
 
       .qr-card {
@@ -671,9 +687,15 @@
 
                 <article class="kit-card">
                   <h3>Clean paper bag</h3>
-                  <p>For clothing or items only where local SANE/SART/legal reviewers approve the protocol.</p>
+                  <p>Printed with inclusive, low-panic guidance for survivors, friends, family, and staff.</p>
                   <div class="paper-bag" aria-label="Clean paper bag mockup">
-                    <span class="paper-label">unused paper bag</span>
+                    <span class="paper-label">survivor choice bag</span>
+                    <ol class="paper-steps">
+                      <li>You are not in trouble.</li>
+                      <li>Use only if local protocol allows.</li>
+                      <li>Dry clothing/items only. No plastic.</li>
+                      <li>Bring to SAFE/SANE care.</li>
+                    </ol>
                   </div>
                 </article>
 
@@ -724,7 +746,7 @@
               <li>Sealed response card with plain-language steps.</li>
               <li>RAINN and local hotline QR cards with short typed URLs.</li>
               <li>Nearest SAFE/SANE care card with update date.</li>
-              <li>Clean paper bag and local paper-bag guidance if approved.</li>
+              <li>Printed survivor choice bag with inclusive instructions if approved.</li>
               <li>Staff mini-card for supportive first response.</li>
             </ul>
           </article>
@@ -740,6 +762,7 @@
           <article class="check-card">
             <h3>Paper bag guidance</h3>
             <ul>
+              <li>Use language that includes every survivor: adults, teens, men, women, LGBTQ+ people, disabled people, immigrants, visitors, and people unsure what happened.</li>
               <li>Use only for dry clothing or items when local protocol permits.</li>
               <li>Do not seal wet items in plastic.</li>
               <li>Do not label with details in public view.</li>
