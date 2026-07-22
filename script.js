@@ -26,7 +26,7 @@ if (canUseLucide) {
 }
 
 const revealTargets = document.querySelectorAll(
-  ".slow-practice article, .nature-gallery figure, .protocol-card, .solution-card, .readiness-card, .timeline article, .resource-grid article, .supporter-panel article, .evidence-grid article, .download-grid a, .pilot-board article"
+  ".slow-practice article, .nature-gallery figure, .protocol-card, .risk-card, .protective-panel, .solution-card, .readiness-card, .timeline article, .resource-grid article, .supporter-panel article, .evidence-grid article, .download-grid a, .pilot-board article"
 );
 
 if ("IntersectionObserver" in window) {
